@@ -248,7 +248,7 @@ namespace pokeDigiSample
 
         public T RunInsert<T>(T item, string tablename, string fields, string values, string whereConditions) where T : ICreature
         {
-            Console.WriteLine($"T {tablename}, F {fields}, V {values}, W {whereConditions}"); // Debugging purposes
+            // Console.WriteLine($"T {tablename}, F {fields}, V {values}, W {whereConditions}"); // Debugging purposes
             int id = connection.QuerySingle<int>(
                 $"INSERT INTO `{tablename}` ({fields}) SELECT {values} WHERE NOT EXISTS (SELECT 1 FROM `{tablename}` WHERE {whereConditions}); SELECT `id` FROM `{tablename}` WHERE {whereConditions};"
             );
@@ -258,7 +258,7 @@ namespace pokeDigiSample
 
         public int RunInsert(string tablename, string fields, string values, string whereConditions)
         {
-            Console.WriteLine($"T {tablename}, F {fields}, V {values}, W {whereConditions}"); // Debugging purposes
+            // Console.WriteLine($"T {tablename}, F {fields}, V {values}, W {whereConditions}"); // Debugging purposes
             int id = connection.QuerySingle<int>(
                 $"INSERT INTO `{tablename}` ({fields}) SELECT {values} WHERE NOT EXISTS (SELECT 1 FROM `{tablename}` WHERE {whereConditions}); SELECT `id` FROM `{tablename}` WHERE {whereConditions};"
             );
