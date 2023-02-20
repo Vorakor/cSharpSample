@@ -28,14 +28,25 @@ namespace pokeDigiSample
         public List<DefaultAttributes> FetchPokemonURLs(HttpClient client, string api_prefix)
         {
             List<DefaultAttributes> pokeNameURLs = new List<DefaultAttributes>();
-            // Initial call here...
-            IPokeResults results = client.GetFromJsonAsync<IPokeResults>(api_prefix + "?offset=0&limit=200").Result;
-            pokeCount = results.Count;
-            while (results.Next != null)
+            IPokeResults results = new IPokeResults();
+            bool getData = true;
+            while (getData)
             {
-                // When next is empty then we've reached the end of the list
-                pokeNameURLs.AddRange(results.Results);
-                results = client.GetFromJsonAsync<IPokeResults>(results.Next).Result;
+                // If both Next and Previous are null, then this is the first run through
+                if (string.IsNullOrEmpty(results.Next) && string.IsNullOrEmpty(results.Previous))
+                {
+                    results = client.GetFromJsonAsync<IPokeResults>(api_prefix + "?offset=0&limit=200").Result;
+                    pokeCount = results.Count;
+                } else if (string.IsNullOrEmpty(results.Next) && !string.IsNullOrEmpty(results.Previous)) {
+                    // When next is empty but previous is not then we've reached the end of the list
+                    getData = false;
+                    pokeNameURLs.AddRange(results.Results);
+                }
+                else
+                {
+                    pokeNameURLs.AddRange(results.Results);
+                    results = client.GetFromJsonAsync<IPokeResults>(results.Next).Result;
+                }
             }
             return pokeNameURLs;
         }
