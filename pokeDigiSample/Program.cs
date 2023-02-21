@@ -9,7 +9,16 @@ internal class Program
         Console.WriteLine("Welcome to the Pokemon-Digimon Sample Application!");
         Console.WriteLine("Creating database...");
         DB database = new DB();
-        API api = new API(database);
+        int creatureCount = database.GetRecordCount("creatures");
+        API api;
+        if (creatureCount > 0)
+        {
+            api = new API();
+        }
+        else
+        {
+            api = new API(database);
+        }
         Console.WriteLine($"Total creatures: {database.GetRecordCount("creatures")}");
         // Now get input
         int input = 0;

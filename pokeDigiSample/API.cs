@@ -15,6 +15,11 @@ namespace pokeDigiSample
             FetchAndStoreCreatures(database);
         }
 
+        public API()
+        {
+            Console.WriteLine("Database has already been loaded...");
+        }
+
         public List<APIDigimon> FetchDigimon(string api_prefix)
         {
             HttpClient client = new HttpClient();
